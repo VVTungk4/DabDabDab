@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <div class="container">  
+        <div class="valentines">
+          <div class="envelope"></div>
+          <div class="front"></div>
+          <div class="card">
+          <div class="text">Happy</br> Valentine's</br> Dayyyyyy!</div>
+          <div class="heart"</div>
+          </div>
+          <div class="hearts">
+            <div class="one"></div>
+            <div class="two"></div>
+            <div class="three"></div>
+            <div class="four"></div>
+            <div class="five"></div>
+          </div>
+        </div>
+        </div>
+        <div class="shadow"></div>
+        </div>
+
+
+        <!-- From Uiverse.io by SouravBandyopadhyay --> 
+<div class="cssload-main">
+	<div class="cssload-heart">
+		<span class="cssload-heartL"></span>
+		<span class="cssload-heartR"></span>
+		<span class="cssload-square"></span>
+	</div>
+	<div class="cssload-shadow"></div>
+</div>
+
+<div class="image-gallery">
+    <div class="heart-frame"><img src="image/1.jpg" alt="Image 1"></div>
+    <div class="heart-frame"><img src="image/2.jpg" alt="Image 2"></div>
+    <div class="heart-frame"><img src="image/3.jpg" alt="Image 3"></div>
+    <div class="heart-frame"><img src="image/4.jpg" alt="Image 4"></div>
+    <div class="heart-frame"><img src="image/5.jpg" alt="Image 5"></div>
+    <div class="heart-frame"><img src="image/6.jpg" alt="Image 6"></div>
+    <div class="heart-frame"><img src="image/7.jpg" alt="Image 7"></div>
+    <div class="heart-frame"><img src="image/8.jpg" alt="Image 8"></div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.container').mouseenter(function () {
+            $('.card').stop().animate({ top: '-90px' }, 'slow');
+
+            let screenWidth = $(window).width();
+            let screenHeight = $(window).height();
+            let envelope = $('.container').offset();
+            let envelopeWidth = $('.container').outerWidth();
+            let envelopeHeight = $('.container').outerHeight();
+            let positions = []; // Lưu vị trí ảnh để tránh chồng lên nhau
+
+            let safeMargin = 20; // Giữ khoảng cách với mép màn hình
+            let imageSize = 150; // Kích thước ảnh
+
+            $('.heart-frame').each(function (index) {
+                let validPosition = false;
+                let randomX, randomY;
+
+                while (!validPosition) {
+                    randomX = Math.floor(Math.random() * (screenWidth - imageSize - safeMargin * 2)) + safeMargin;
+                    randomY = Math.floor(Math.random() * (screenHeight - imageSize - safeMargin * 2)) + safeMargin;
+
+                    let overlapping = false;
+
+                    // Kiểm tra không đè lên bao thư
+                    if (
+                        randomX + imageSize > envelope.left &&
+                        randomX < envelope.left + envelopeWidth &&
+                        randomY + imageSize > envelope.top &&
+                        randomY < envelope.top + envelopeHeight
+                    ) {
+                        overlapping = true;
+                    }
+
+                    // Kiểm tra không trùng vị trí ảnh khác
+                    for (let pos of positions) {
+                        if (
+                            randomX + imageSize > pos.x &&
+                            randomX < pos.x + imageSize &&
+                            randomY + imageSize > pos.y &&
+                            randomY < pos.y + imageSize
+                        ) {
+                            overlapping = true;
+                            break;
+                        }
+                    }
+
+                    if (!overlapping) {
+                        validPosition = true;
+                        positions.push({ x: randomX, y: randomY });
+                    }
+                }
+
+                $(this).css({
+                    left: randomX + 'px',
+                    top: randomY + 'px',
+                    position: 'absolute'
+                }).delay(index * 150).queue(function (next) {
+                    $(this).addClass('show').addClass('bounce'); // Hiện ảnh + hiệu ứng nhảy
+                    next();
+                });
+            });
+        }).mouseleave(function () {
+            $('.card').stop().animate({ top: 0 }, 'slow');
+
+            $('.heart-frame').each(function (index) {
+                $(this).delay(index * 100).queue(function (next) {
+                    $(this).removeClass('show').addClass('hide'); // Ẩn ảnh với hiệu ứng thu nhỏ
+                    next();
+                }).delay(600).queue(function (next) {
+                    $(this).removeClass('bounce').removeClass('hide'); // Dừng hiệu ứng nhảy sau khi ảnh biến mất
+                    next();
+                });
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>
